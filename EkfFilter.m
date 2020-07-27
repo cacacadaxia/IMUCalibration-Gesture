@@ -5,7 +5,7 @@ function [Q2,Pk2]=EkfFilter(Q1,ImuData,t,Vm,Pk1)
 % author  Zhang Xin
 
 if isempty(Pk1)
-   Pk1=[ 0.1 , 0.01 , 0.01 , 0.01;...
+   Pk1=   [ 0.1 , 0.01 , 0.01 , 0.01;...
            0.01 , 0.1 , 0.01 , 0.01;...
            0.01 , 0.01 , 0.1 , 0.01;...
            0.01 , 0.01 , 0.01 , 0.1  ]*0.001;
@@ -58,7 +58,7 @@ if abs(norm_a-9.8)<2 && norm_g< 2
            Qp(1),-Qp(2),-Qp(3) , Qp(4)] ;   
 
     h1=R3;                               %acc in sensor fixed frame 
-    h2=Vm(2)*R2+Vm(3)*R3;          %mag in sensor fixed frame
+    h2=Vm(2)*R2+Vm(3)*R3;                %mag in sensor fixed frame
 
     Hk1=J3;
     Hk2=Vm(2)*J2+Vm(3)*J3;

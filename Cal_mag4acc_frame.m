@@ -12,8 +12,8 @@ rotation{n+2}=Kg;
 [a]=lsqnonlin(@mag_in_diff_gesture,a0,[],[],options,rotation);
 
 Tm2a=[a(1)   , a(2),  a(3);...
-    a(4) ,  a(5)   , a(6);...
-    a(7) ,  a(8),   -1];
+        a(4) ,  a(5)   , a(6);...
+     a(7) ,  a(8),   -1];
 
 Bm=[a(9);a(10);a(11)];
 
@@ -81,6 +81,7 @@ function [Qk_plus1]=attitude_update_RK4(Qk,dt,gyro0,gyro1)
 % conference: A Robust and Easy to implement method for imu
 % calibration without External Equipments
 
+%%Áú¸ñ¿âËþ·½·¨
 q_1=Qk;
 k1=(1/2)*omegaMatrix(gyro0)*q_1;
 q_2=Qk+dt*(1/2)*k1;

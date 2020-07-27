@@ -1,5 +1,5 @@
 function See_Gesture( data,Ta,Ka,Ba,Tg,Kg,Bg,Tm2a,Bm,Vm,Set_Bias_Gyro)
-% show the gesture of sensor, compare different algorithm
+% show the gesture of sensor, compare different algorithm  %%比较各种姿态
 % data is raw data ;  
 % Vm is mag vector in world frame
 % author  Zhang Xin
@@ -49,6 +49,7 @@ for i=1:m
     else
         Q(i,:)=quaternProd(Q(i-1,:),q(i,:));    %Q(i-1,:)*q(i,:)
                
+        %%单纯的角度
         Q_RK4(i,:)=attitude_update_RK4(Q_RK4(i-1,:)',t(i),data(i-1,5:7)',data(i,5:7)')';
         
         QfuseHL(i,:)=HighLowPassFilter(QfuseHL(i-1,:),data(i,:),t(i));
@@ -57,11 +58,13 @@ for i=1:m
         
         [QfuseMahony(i,:),eInt]=MahonyFilter(QfuseMahony(i-1,:),data(i,:),t(i),Vm,eInt);  
         
-        data_bias=[0,0,0,0,Set_Bias_Gyro,0,0,0];
         
-        [QfuseEKF_bias(i,:),Bias_Ekf(i,:),Pk_EKF_bias]=EKF_Gyro_bias(QfuseEKF_bias(i-1,:),Bias_Ekf(i-1,:),data(i,:)+data_bias,t(i),Vm,Pk_EKF_bias);
+        %% 利用卡尔曼滤波进行bias的估计过程
+        data_bias=[0,0,0,0,Set_Bias_Gyro*randn,0,0,0];%%为什么要对陀螺仪的bias进行添加呢？
+        
+        [QfuseEKF_bias(i,:),Bias_Ekf(i,:),Pk_EKF_bias]  = EKF_Gyro_bias(QfuseEKF_bias(i-1,:),Bias_Ekf(i-1,:),data(i,:)+data_bias,t(i),Vm,Pk_EKF_bias);
        
-        [QfuseESKF(i,:),Bg_ESKF(i,:),delta_X(i,:),Pk_ESKF]=ESKF(QfuseESKF(i-1,:),Bg_ESKF(i-1,:),delta_X(i-1,:),data(i,:)+data_bias,t(i),Vm,Pk_ESKF);
+        [QfuseESKF(i,:),Bg_ESKF(i,:),delta_X(i,:),Pk_ESKF]  = ESKF(QfuseESKF(i-1,:),Bg_ESKF(i-1,:),delta_X(i-1,:),data(i,:)+data_bias,t(i),Vm,Pk_ESKF);
         
     end
 end

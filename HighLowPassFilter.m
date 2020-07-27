@@ -48,7 +48,7 @@ end
 function q = accMeg2qRichard(data)
 
 
-vX=cross(data(1,8:10),data(1,2:4));
+vX=cross(data(1,8:10),data(1,2:4));%%µØ´ÅÐÅºÅ
 vX=vX/norm(vX);
 vY=cross(data(1,2:4),vX);
 vY=vY/norm(vY);

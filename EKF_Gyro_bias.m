@@ -1,6 +1,6 @@
 function [Q2,Bais2,Pk2]=EKF_Gyro_bias(Q1,Bais1,ImuData,t,Vm,Pk1)
 %EKF filter to Gyro atitude with Accelerate & Magnetic
-% the Bias of the Acc銆丟yro銆丮ag are set as State.
+% the Bias of the Acc??Gyro??Mag are set as State.
 % but the Bias of Acc and Mag are castrated.
 % author Zhang Xin
 
@@ -13,7 +13,6 @@ para_PK_Bm=0;             % castrate Bias of Mag
 
 if isempty(Pk1)  
     Pk1=diag([[1,1,1,1]*para_Pk_Q,[1,1,1]*para_Pk_Ba,[1,1,1]*para_PK_Bg,[1,1,1]*para_PK_Bm]);
-    
 end
 
 para_Qk_Q=0.00001;
@@ -104,7 +103,7 @@ if abs(norm_a-9.8)<2 && norm_g< 2
     
     Kk=P_k*Hk'*inv(Hk*P_k*Hk'+Rk);
     
-    S_temp2=[Qp;Biasp]+ Kk*[Acc_sensor-Acc_p;Mag_sensor-Mag_p];
+    S_temp2=[Qp;Biasp]+ Kk*[Acc_sensor-Acc_p;Mag_sensor-Mag_p];%%以地磁和加速度计为测量量，okay
     
     Q2=S_temp2(1:4)/norm(S_temp2(1:4));
     

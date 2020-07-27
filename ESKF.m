@@ -26,10 +26,10 @@ Qp=Qp/norm(Qp);
 delta_theta=norm([wx,wy,wz]);
 u= [wx,wy,wz]'/delta_theta;
 
-R_u_delta_theta=eye(3)-Skew_symmetric(u)*sin(delta_theta)+Skew_symmetric(u)*Skew_symmetric(u)*(1-cos(delta_theta));
+R_u_delta_theta = eye(3)-Skew_symmetric(u)*sin(delta_theta)+Skew_symmetric(u)*Skew_symmetric(u)*(1-cos(delta_theta));
 
 F_delta_X=[R_u_delta_theta, -eye(3)*t;...
-           zeros(3,3),       eye(3) ];
+           zeros(3,3),       eye(3) ];%%这就是用到正切空间的性质了
 Para_delta_theta=0.000001;
 Para_delta_Bg=0.000001;
 Q_delta_X=diag([[1,1,1]*Para_delta_theta,[1,1,1]*Para_delta_Bg]);

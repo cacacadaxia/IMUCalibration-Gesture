@@ -4,7 +4,7 @@ function [Tg,Kg]=ICRA_2014_gyro(rotation,a0)
 % author  Zhang Xin
 
 if nargin<2 
-   a0=[0,0,0,0,0,0,0.001,0.001,0.001];
+   a0=[0,0,0,0,0,0,0.001,0.001,0.001];%%陀螺仪的厨师参数
 end
 
 
@@ -12,7 +12,8 @@ end
 % 'Display','iter','TolX',1e-4,'MaxIter',10);
 options=optimset('Algorithm','Levenberg-Marquardt',...
 'Display','iter','TolX',1e-5,'MaxIter',18);
-a=lsqnonlin(@rotation_gyro,a0,[],[],options,rotation);
+a = lsqnonlin(@rotation_gyro,a0,[],[],options,rotation);%%这里用的什么优化？
+%%rotation作为传递进去的参数
 
 Tg=[   1  , -a(1) ,  a(2) ;...
      a(3) ,   1   , -a(4) ;...
@@ -45,6 +46,7 @@ Kg=[ a(7) ,  0   ,  0  ;...
         gyro0=Tg*Kg*(data(j-1,5:7)'+Bg);
         gyro1=Tg*Kg*(data(j,5:7)'+Bg);
         dt=(data(j,1)-data(j-1,1));
+        %%龙哥库塔需要两个时刻的陀螺仪数据
         Q(:,j)=attitude_update_RK4(Q(:,j-1),dt,gyro0,gyro1);
         
     end
@@ -75,7 +77,6 @@ q_4=Qk+dt*k3;
 k4=(1/2)*omegaMatrix(gyro1)*q_4;
 Qk_plus1=Qk+dt*(k1/6+k2/3+k3/3+k4/6);
 Qk_plus1=Qk_plus1/norm(Qk_plus1);
-
 end
 
 function [omega]=omegaMatrix(data)
